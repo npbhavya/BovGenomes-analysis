@@ -1,0 +1,112 @@
+library(ggplot2) # <- need for ggplot()
+library(dplyr) # <- need for %>%, & filter()
+library(emmeans) # <- need for EMMs
+library(lme4) # <- need for mixed models (with replicate)
+library(car) # <- need for Anova, type 3 F-test
+library(afex)  # <- need for mixed() test of fixed effects in mixed models
+library(rmarkdown) # <- need for paged_table()
+
+options(contrasts = c("contr.sum", "contr.poly")) # <- need for appropriate type 3 F-test
+options(scipen = 999) # <- prevents scientific notation in small decimals
+emm_options(lmer.df = "satterth")
+
+#mixed model ANCOVA 
+#testing 53 genomes 
+DistMMRxeg_InOut=read_excel("~/OneDrive - Indiana University/BovGenomeShared/Paper_AllAnalyses/GeoDist/DistMMReg_InOut.xlsx")
+df=as.data.frame(DistMMReg_InOut)
+data=subset(df, select=c(iso1, iso2, site, samenem, lpclb53, lgeodist, ani))
+data=na.omit(data)
+
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  data, x = "lgeodist", y = "ani",
+  color = "samenem", add = "reg.line"
+)
+model1 <- lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=data)
+lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=data)
+Type3FE <- mixed(model1, data = data, type = 3, )
+#mixed model 
+Type3FE
+
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  data, x = "lgeodist", y = "lpclb53",
+  color = "samenem", add = "reg.line"
+)
+model2 <- lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=data)
+lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=data)
+Type3FE <- mixed(model2, data = data, type = 3)
+#mixed model 
+Type3FE
+
+#picking only the 42 isolates 
+justInd_df<-subset(df, pclb42>0)
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  justInd_df, x = "lgeodist", y = "ani",
+  color = "samenem", add = "reg.line"
+)
+model1 <- lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=justInd_df)
+lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=justInd_df)
+Type3FE <- mixed(model1, data = justInd_df, type = 3, )
+#mixed model 
+Type3FE
+
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  justInd_df, x = "lgeodist", y = "lpclb53",
+  color = "samenem", add = "reg.line"
+)
+model2 <- lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=justInd_df)
+lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1)+(1|site), data=justInd_df)
+Type3FE <- mixed(model2, data = justInd_df, type = 3)
+#mixed model 
+Type3FE
+
+#picking and testing only the MC sites 
+justMC_df<-subset(df, site=="MC")
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  justMC_df, x = "lgeodist", y = "ani",
+  color = "samenem", add = "reg.line"
+)
+model1 <- lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justMC_df)
+lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justMC_df)
+Type3FE <- mixed(model1, data = justMC_df, type = 3, )
+#mixed model 
+Type3FE
+
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  justMC_df, x = "lgeodist", y = "lpclb53",
+  color = "samenem", add = "reg.line"
+)
+model2 <- lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justMC_df)
+lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justMC_df)
+Type3FE <- mixed(model2, data = justMC_df, type = 3)
+#mixed model 
+Type3FE
+
+#picking and testing only the LD sites 
+justLD_df<-subset(df, site=="LD")
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  justLD_df, x = "lgeodist", y = "ani",
+  color = "samenem", add = "reg.line"
+)
+model1 <- lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justLD_df)
+lmer(ani ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justLD_df)
+Type3FE <- mixed(model1, data = justLD_df, type = 3, )
+#mixed model 
+Type3FE
+
+#scatter plot between covariate, lpclb and outcome variable ani
+ggscatter(
+  justLD_df, x = "lgeodist", y = "lpclb53",
+  color = "samenem", add = "reg.line"
+)
+model2 <- lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justLD_df)
+lmer(lpclb53 ~ lgeodist*samenem + (1|iso2)+(1|iso1), data=justLD_df)
+Type3FE <- mixed(model2, data = justLD_df, type = 3)
+#mixed model 
+Type3FE

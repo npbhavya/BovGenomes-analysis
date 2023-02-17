@@ -6,4 +6,4 @@ The folders are broken down to the sub headings in the paper, and within each fo
 
 
 The general overview of the steps in the analysis is shown below 
-![Overview of Bioinformatic workflow](seqeuncing-assembly-annotation/Bioinformatics-workflow.png)
+![Overview of Bioinformatic workflow](https://github.com/npbhavya/BovGenomes-analysis/blob/main/seqeuncing-assembly-annotation/Bioinforamtics-workflow.png)
